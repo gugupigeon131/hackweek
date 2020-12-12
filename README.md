@@ -1,5 +1,13 @@
 # hackweek
 
+- API文档：
+
+```
+./merge/API.md
+```
+    
+- 配置文件：
+
 使用前，在merge文件夹下新建Config文件夹,Config文件夹里新建config.json,内容:
 
 engine_port填程序监听的端口
