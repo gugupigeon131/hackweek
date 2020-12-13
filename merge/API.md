@@ -175,7 +175,7 @@ URL地址：/newarticle
 
 方法描述：根据建筑名展示其附属文章
 
-URL地址：/showallbuilding
+URL地址：/showallarticle
 
 请求方法：POST
 
