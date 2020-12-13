@@ -20,6 +20,7 @@ type MembersController struct {
 }
 
 func (mc *MembersController) Router(GinEngine *gin.Engine) {
+	//部分接口不需要调用，故未写入API文档
 	GinEngine.POST("/register",mc.Register)
 	GinEngine.POST("/login",mc.Login)
 	GinEngine.POST("/newbuilding",mc.CheckToken,mc.NewBuilding)
@@ -38,8 +39,8 @@ func (mc *MembersController) Router(GinEngine *gin.Engine) {
 
 	/////////////////////////////////////////////////////////add
 	//GinEngine.GET("/square",mc.CheckToken,mc.RecommendBuilding)//无用的代码罢了
-	GinEngine.POST("/like",mc.CheckToken,mc.Like)
-	GinEngine.POST("/save",mc.CheckToken,mc.Save)
+	GinEngine.POST("/like",mc.CheckToken,mc.Like)//用不上，且有问题，主键没弄好
+	GinEngine.POST("/save",mc.CheckToken,mc.Save)//用不上，且有问题，主键没弄好
 	GinEngine.POST("/querysave",mc.CheckToken,mc.QuerySave)//save砍了，只返回发布过的,
 	GinEngine.POST("/querybuildingbyclass",mc.CheckToken,mc.QueryBuildingByClass)
 	GinEngine.POST("/querysavebuilding",mc.CheckToken,mc.QuerySaveBuilding)
@@ -654,7 +655,7 @@ func (mc *MembersController) QuerySaveBuilding (context *gin.Context) {
 	chooseLen:=len(choose)
 	serv := Service.MemberService{}
 
-	for i:=0;i<chooseLen;i++ {///////////////////未去重
+	for i:=0;i<chooseLen;i++ {
 		building := *serv.QueryBuildingByName(choose[i].Name)
 		chooseBuildingLen:=len(chooseBuilding)
 		flag:=1

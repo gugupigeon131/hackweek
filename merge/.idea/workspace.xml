@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1e01140c-200c-4f31-9cf1-5965d84a4292" name="默认更改列表" comment="" />
+    <list default="true" id="1e01140c-200c-4f31-9cf1-5965d84a4292" name="默认更改列表" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/Memberscontrollor.go" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/Memberscontrollor.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,6 +22,9 @@
     </option>
   </component>
   <component name="GOROOT" path="c:\go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
   </component>
@@ -26,6 +32,7 @@
     <setting file="file://$PROJECT_DIR$/Model/StudentModel.go" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1l3jjxpRu0s3P1TbC4eY1wSFFAW" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
