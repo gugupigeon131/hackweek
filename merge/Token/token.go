@@ -3,8 +3,6 @@ package Token
 import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
-	"net/http"
 	"time"
 	"学生系统/Model"
 )
@@ -56,7 +54,7 @@ func (j *JWT) ParseToken(TokenString string) (*CustomClaims, error) {
 
 }
 
-func GenerateToken(context *gin.Context,Student *Model.StudentModel){
+func GenerateToken(Student *Model.StudentModel) string {
 	j := NewJwt()
 
 	claims := CustomClaims{
@@ -69,26 +67,13 @@ func GenerateToken(context *gin.Context,Student *Model.StudentModel){
 		},
 
 	}
+
 	token ,err := j.CreateToken(claims)
-
 	if err != nil {
-		context.JSON(http.StatusOK,gin.H{
-			"massage" : err.Error(),
-			"status" : -1,
-			"data" : nil,
-		})
-	}
-	data := Model.DateReq{
-		ID: Student.Id,
-		Token: token,
+		panic(err)
 	}
 
-	context.JSON(http.StatusOK,gin.H{
-		"status" : 200 ,
-		"message" : "登录成功" ,
-		"data" : data,
-	})
-
+	return token
 }
 
 

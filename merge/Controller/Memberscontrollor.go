@@ -3,7 +3,6 @@ package Controller
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -20,6 +19,7 @@ type MembersController struct {
 }
 
 func (mc *MembersController) Router(GinEngine *gin.Engine) {
+
 	//部分接口不需要调用，故未写入API文档
 	GinEngine.POST("/register",mc.Register)
 	GinEngine.POST("/login",mc.Login)
@@ -41,7 +41,7 @@ func (mc *MembersController) Router(GinEngine *gin.Engine) {
 	//GinEngine.GET("/square",mc.CheckToken,mc.RecommendBuilding)//无用的代码罢了
 	GinEngine.POST("/like",mc.CheckToken,mc.Like)//用不上，且有问题，主键没弄好
 	GinEngine.POST("/save",mc.CheckToken,mc.Save)//用不上，且有问题，主键没弄好
-	GinEngine.POST("/querysave",mc.CheckToken,mc.QuerySave)//save砍了，只返回发布过的,
+	GinEngine.POST("/querysave",mc.CheckToken,mc.QuerySave)//save砍了，故只返回发布过的,
 	GinEngine.POST("/querybuildingbyclass",mc.CheckToken,mc.QueryBuildingByClass)
 	GinEngine.POST("/querysavebuilding",mc.CheckToken,mc.QuerySaveBuilding)
 	///////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ func (mc *MembersController)NewArticle(context *gin.Context)  {
 	var article Param.Article
 	err := Tool.Decode(context.Request.Body,&article)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	/////////////////////////////////////////add
@@ -90,7 +90,7 @@ func (mc *MembersController) NewBuilding(context *gin.Context) {
 	var building Param.Building
 	err := Tool.Decode(context.Request.Body, &building)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	/////////////////////////////////////////add
@@ -127,7 +127,7 @@ func (mc *MembersController) Register (context *gin.Context) {
 	err := Tool.Decode(context.Request.Body, &StudentMassage)
 
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	serv := Service.MemberService{}
 	TheStudent := serv.QueryStudentById(StudentMassage.Id)
@@ -141,13 +141,17 @@ func (mc *MembersController) Register (context *gin.Context) {
 		context.Abort()
 	}
 	if TheStudent.Id == "" {
+		serv.InsertStudent(StudentMassage)
+		TheStudent = serv.QueryStudentById(StudentMassage.Id)
+		data := Model.DateReq{
+			ID: TheStudent.Id,
+			Token: Token.GenerateToken(TheStudent),
+		}
 		context.JSON(http.StatusOK, gin.H{
 			"status":  200,
 			"message": "成功",
-			"data":    StudentMassage,
+			"data":    data,
 		})
-		serv.InsertStudent(StudentMassage)
-		Token.GenerateToken(context, TheStudent)
 	} else {
 		context.JSON(http.StatusOK, gin.H{
 			"status":  400,
@@ -165,7 +169,7 @@ func (mc *MembersController)QueryStudent(context *gin.Context) {
 	err := Tool.Decode(context.Request.Body, &StudentMassage)
 
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	serv := Service.MemberService{}
@@ -188,7 +192,7 @@ func (mc *MembersController) QueryArticleByName(context *gin.Context) {
 	err := Tool.Decode(context.Request.Body, &ArticleMassage)
 
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	serv := Service.MemberService{}
@@ -219,7 +223,7 @@ func (mc *MembersController) QueryBuildingByName(context *gin.Context) {
 	err := Tool.Decode(context.Request.Body, &BuildingMassage)
 
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	serv := Service.MemberService{}
@@ -248,7 +252,7 @@ func (mc *MembersController) UpdataStudent(context *gin.Context) {
 	err := Tool.Decode(context.Request.Body, &student)
 
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	serv := Service.MemberService{}
@@ -273,7 +277,7 @@ func (mc *MembersController) UpdataBuilding(context *gin.Context) {
 	err := Tool.Decode(context.Request.Body, &Building)
 
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	serv := Service.MemberService{}
@@ -300,7 +304,7 @@ func (mc *MembersController) UpdataArticle(context *gin.Context) {
 	err := Tool.Decode(context.Request.Body, &Article)
 
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	serv := Service.MemberService{}
@@ -326,7 +330,7 @@ func (mc *MembersController) DeleteArticle(context *gin.Context) {
 	var Article Param.Article
 	err := Tool.Decode(context.Request.Body, &Article)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	serv := Service.MemberService{}
 
@@ -351,7 +355,7 @@ func (mc *MembersController) DeleteBuilding(context *gin.Context) {
 	var Building Param.Building
 	err := Tool.Decode(context.Request.Body, &Building)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	serv := Service.MemberService{}
 
@@ -377,7 +381,7 @@ func (mc *MembersController) DeleteStudent(context *gin.Context) {
 	var student Param.StudentParam
 	err := Tool.Decode(context.Request.Body, &student)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	serv := Service.MemberService{}
 
@@ -415,13 +419,21 @@ func (mc *MembersController) Login(context *gin.Context) {
 	var student Param.StudentParam
 	err := Tool.Decode(context.Request.Body, &student)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	serv := Service.MemberService{}
 	TheStudent := serv.QueryStudentById(student.Id)
 
 	if student.Password == TheStudent.Password {
-		Token.GenerateToken(context, TheStudent)
+		data := Model.DateReq{
+			ID: TheStudent.Id,
+			Token: Token.GenerateToken(TheStudent),
+		}
+		context.JSON(http.StatusOK,gin.H{
+			"status" : 200 ,
+			"message" : "登录成功" ,
+			"data" : data,
+		})
 	} else {
 		context.JSON(http.StatusOK, gin.H{
 			"status":  400,
@@ -495,7 +507,10 @@ func Cors() gin.HandlerFunc {
 
 func (mc *MembersController) ShowAllArticle(context *gin.Context) {
 	var building Param.Building
-	Tool.Decode(context.Request.Body, &building)
+	err:=Tool.Decode(context.Request.Body, &building)
+	if err!=nil {
+		panic(err)
+	}
 	serv := Service.MemberService{}
 	articles := serv.ShowAllArticle(building.BuildingName)
 	if articles !=nil {
@@ -535,13 +550,13 @@ func (mc *MembersController) Like (context *gin.Context) {
 	var like Model.Like
 	err := Tool.Decode(context.Request.Body,&like)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	md := Dao.MemberDao{Tool.DbEngine}
 	choose:=Model.Like{}
 	_,err=md.Where("user_id=?",like.UserId).And("at_id=?",like.AtId).Get(&choose)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	if choose.AtId=="" {
 		context.JSON(http.StatusOK, gin.H{
@@ -550,7 +565,7 @@ func (mc *MembersController) Like (context *gin.Context) {
 		})
 		_, err = md.InsertOne(&like)
 		if err != nil {
-			log.Fatal(err.Error())
+			panic(err)
 		}
 	} else {
 		context.JSON(http.StatusOK, gin.H{
@@ -565,13 +580,13 @@ func (mc *MembersController) Save (context *gin.Context) {
 	var save Model.Save
 	err := Tool.Decode(context.Request.Body,&save)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	md := Dao.MemberDao{Tool.DbEngine}
 	choose:=Model.Save{}
 	_,err=md.Where("user_id=?",save.UserId).And("at_id=?",save.AtId).Get(&choose)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	if choose.AtId=="" {
 		context.JSON(http.StatusOK, gin.H{
@@ -580,7 +595,7 @@ func (mc *MembersController) Save (context *gin.Context) {
 		})
 		_, err = md.InsertOne(&save)
 		if err != nil {
-			log.Fatal(err.Error())
+			panic(err)
 		}
 	} else {
 		context.JSON(http.StatusOK, gin.H{
@@ -597,14 +612,14 @@ func (mc *MembersController) QuerySave (context *gin.Context) {
 	err := Tool.Decode(context.Request.Body, &StudentMassage)
 
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	md := Dao.MemberDao{Tool.DbEngine}
 	choose:=make([]Model.Article,0)
 	err=md.Where("up_id=?",StudentMassage.Id).Find(&choose)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	context.JSON(http.StatusOK, gin.H{
@@ -620,7 +635,7 @@ func (mc *MembersController) QueryBuildingByClass (context *gin.Context) {
 	err := Tool.Decode(context.Request.Body, &BuildingMassage)
 
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 
@@ -641,14 +656,14 @@ func (mc *MembersController) QuerySaveBuilding (context *gin.Context) {
 	err := Tool.Decode(context.Request.Body, &StudentMassage)
 
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	md := Dao.MemberDao{Tool.DbEngine}
 	choose:=make([]Model.Article,0)
 	err=md.Where("up_id=?",StudentMassage.Id).Find(&choose)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	chooseBuilding:=make([]Model.Building,0)

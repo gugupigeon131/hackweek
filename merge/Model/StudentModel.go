@@ -50,6 +50,7 @@ type Article struct {
 
 
 ////////////////////////////////////////////////////////////////////add
+//如果以后要用点赞、收藏，应添加id作为主键
 type Like struct {
 	UserId     	string `xorm:"pk unique varchar(100)" json:"user_id"`
 	AtId		string `xorm:"varchar(100)" json:"at_id"`

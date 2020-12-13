@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"log"
 	"time"
 )
 type User struct {
@@ -29,7 +28,7 @@ func(GM *Gorm) GormEng(cfg *Config)  {
 	cmm := database.User + ":" + database.Password + "@tcp(" + database.Host + ":" + database.Port + ")/" + database.Dbname+"?charset=utf8mb4&parseTime=True&loc=Local"
 	gdb , err := gorm.Open(cfg.DatabaseConfig.Driver,cmm)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	defer gdb.Close()
 	gdb.AutoMigrate(&User{})

@@ -3,7 +3,6 @@ package Tool
 import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
-	"log"
 	"学生系统/Model"
 )
 
@@ -19,7 +18,7 @@ func OrmEngine(cfg *Config) (*Orm, error) {
 	conn := database.User + ":" + database.Password + "@tcp(" + database.Host + ":" + database.Port + ")/" + database.Dbname+"?charset=utf8"
 	eng, err := xorm.NewEngine(database.Driver, conn)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 		return nil, err
 	}
 
@@ -28,7 +27,7 @@ func OrmEngine(cfg *Config) (*Orm, error) {
 	/////////////////////////////////////////////////////////////////////modify
 
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	orm := new(Orm)
 	orm.Engine = eng

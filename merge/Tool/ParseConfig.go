@@ -3,7 +3,6 @@ package Tool
 import (
 	"bufio"
 	"encoding/json"
-	"log"
 	"os"
 
 )
@@ -28,7 +27,7 @@ var _cfg *Config = nil
 func ParseConfig(path string) *Config {
 	file, err := os.Open(path)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	defer file.Close()
 	reader := bufio.NewReader(file)
@@ -37,7 +36,7 @@ func ParseConfig(path string) *Config {
 
 	err = decoder.Decode(&_cfg)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	return _cfg
 

@@ -1,7 +1,6 @@
 package Dao
 
 import (
-	"log"
 	"学生系统/Model"
 	"学生系统/Tool"
 )
@@ -13,7 +12,7 @@ type MemberDao struct {
 func (md *MemberDao) InsertArticle(member Model.Article) int64 {
 	result, err := md.InsertOne(&member)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	return result
@@ -23,7 +22,7 @@ func (md *MemberDao) InsertArticle(member Model.Article) int64 {
 func (md *MemberDao) InsertBuilding(member Model.Building) int64 {
 	result, err := md.InsertOne(&member)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	return result
@@ -33,7 +32,7 @@ func (md *MemberDao) InsertBuilding(member Model.Building) int64 {
 func (md *MemberDao) InsertStudent(member Model.StudentModel) int64 {
 	result, err := md.InsertOne(&member)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	return result
@@ -46,7 +45,7 @@ func (md *MemberDao) QueryArticleByName(name string) *Model.Article{
 	var article Model.Article
 	_, err := md.Where("name = ? ", name).Get(&article)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 		return nil
 	}
 	return &article
@@ -57,7 +56,7 @@ func (md *MemberDao) QueryBuildingByName(name string) *Model.Building {
 	var building Model.Building
 	_, err := md.Where(" building_name = ? ", name).Get(&building)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 		return nil
 	}
 	return &building
@@ -71,7 +70,7 @@ func (md *MemberDao) QueryArticleById(id string) *Model.Article{
 	var article Model.Article
 	_, err := md.Where("id = ? ", id).Get(&article)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 		return nil
 	}
 	return &article
@@ -82,7 +81,7 @@ func (md *MemberDao) QueryBuildingById(id string) *Model.Building {
 	var building Model.Building
 	_, err := md.Where("building_name = ? ", id).Get(&building)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 		return nil
 	}
 	return &building
@@ -93,7 +92,7 @@ func (md *MemberDao) QueryStudentById(id string) *Model.StudentModel {
 	var student Model.StudentModel
 	_, err := md.Where("id = ? ", id).Get(&student)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 		return nil
 	}
 	return &student
@@ -105,7 +104,7 @@ func (md *MemberDao) UpdataBuilding(member Model.Building) int64 {
 
 	result, err := md.Id(Building.Id).Update(member)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	return result
 
@@ -118,7 +117,7 @@ func (md *MemberDao) UpdataArticle(member Model.Article) int64 {
 
 	result, err := md.Id(Article.Id).Update(member)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	return result
 
@@ -132,7 +131,7 @@ func (md *MemberDao) UpdataStudent(member Model.StudentModel) int64 {
 
 	result, err := md.Id(student.DatabaseId).Update(member)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 	return result
 
@@ -143,7 +142,7 @@ func (md *MemberDao) DeleteBuilding(id string) int64 {
 	var user Model.Building
 	result, err := md.Where("id = ?", id).Delete(&user)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 		return 0
 	}
 	return result
@@ -157,7 +156,7 @@ func (md *MemberDao) DeleteArticle(id string) int64 {
 	var user Model.Article
 	result, err := md.Where("id = ?", id).Delete(&user)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 		return 0
 	}
 	return result
@@ -169,7 +168,7 @@ func (md *MemberDao) DeleteStudent(id string) int64 {
 	var user Model.StudentModel
 	result, err := md.Where("id = ?", id).Delete(&user)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 		return 0
 	}
 	return result
@@ -187,7 +186,7 @@ func (md *MemberDao) InitAdministrator() {
 	if truemember.Id == "" {
 		_, err := md.InsertOne(&menber)
 		if err != nil {
-			log.Fatal(err.Error())
+			panic(err)
 		}
 	}
 

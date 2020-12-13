@@ -7,16 +7,16 @@ package Tool
 //	var basic Param.StudentParam
 //	err = ioutil.WriteFile("./basicData.json", []byte("{ \"number\": \"0\", \"username\": [] }"), 0777)
 //	if err!=nil {
-//		log.Fatal(err.Error())
+//		panic(err)
 //	}
 //
 //	buffer, err = ioutil.ReadFile("./basicData.json")
 //	if err!=nil {
-//		log.Fatal(err.Error())
+//		panic(err)
 //	}
 //	err = os.Mkdir("./students", os.ModePerm)
 //	if err!=nil {
-//		log.Fatal(err.Error())
+//		panic(err)
 //	}
 //	json.Unmarshal(buffer,&basic)
 //

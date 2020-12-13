@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"log"
 	"学生系统/Controller"
 	"学生系统/Service"
 	"学生系统/Tool"
@@ -19,14 +18,16 @@ func main() {
 
 	_,err :=Tool.OrmEngine(cfg)
 	if err != nil {
-		log.Fatal(err.Error())
+		panic(err)
 	}
 
 	/////////////////////////////////////////////////////////add
+	//之前已经测试过可用，包括与其相关的路由:/square
+	//但是，后续的修改已经导致该模块不可用，具体错误未知，反正用不上
 	/*
 		err=algorithm.Init()
 		if err != nil {
-			log.Fatal(err.Error())
+			panic(err)
 		}
 	*/
 	/////////////////////////////////////////////////////////
