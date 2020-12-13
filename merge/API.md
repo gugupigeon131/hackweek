@@ -31,11 +31,17 @@ URL地址：/register
 | ---  | ---  | ---  |
 |  message  |  string  |  返回信息  |
 |  status  |  int  |  状态  |
+|  data.ID  |  string  |  用户名  |
+|  data.Token  |  string  |  基于 jwt 的令牌  |
 
 返回示例
 
 ```
 {
+    "data": {
+        "ID": "abc",
+        "Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFiYyIsInBhc3N3b3JkIjoiYWJjIiwiZXhwIjoxNjA3Nzg1MjY1LCJpc3MiOiJseHkiLCJuYmYiOjE2MDc3ODA2NjV9.51RLPkF8olOM8sE2U7McuOpR1dI4k3o6m0Df2aHi8g0"
+    },
     "message": "成功",
     "status": 200
 }
